@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuración - Chess AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <header>
+    <div class="logo">♟ CHESS <span>AI</span></div>
+    <div class="badge">ARENA SETUP</div>
+  </header>
+
+  <main style="flex-direction: column; gap: 40px; padding-top: 20px;">
+    <h1 style="font-family: var(--font-display); font-weight: 800; letter-spacing: 0.05em; text-align: center;">ELIGE UN MODO DE JUEGO</h1>
+
+    <!-- ─── Selector de modos ─── -->
+    <div class="setup-container" style="display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 900px; z-index: 10;">
+
+      <div class="player-panel mode-card" id="modeCardAI" style="width: 320px; align-items: stretch; gap: 12px; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="player-avatar white-avatar">⚔</div>
+          <div class="player-name" style="font-size: 1.1rem; margin: 0;">IA vs IA</div>
+        </div>
+        <p class="player-color" style="margin: 0;">Dos motores de IA juegan entre sí. Observa la partida en tiempo real.</p>
+      </div>
+
+      <div class="player-panel right mode-card" id="modeCardHuman" style="width: 320px; align-items: stretch; gap: 12px; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="player-avatar black-avatar">🧑</div>
+          <div class="player-name" style="font-size: 1.1rem; margin: 0;">Humano vs IA + Experto</div>
+        </div>
+        <p class="player-color" style="margin: 0;">Juega tú mismo contra una IA, con un chatbot experto que sugiere y explica jugadas.</p>
+      </div>
+
+    </div>
+
+    <!-- ─── Configuración Modo 1: IA vs IA ─── -->
+    <div id="configAIvsAI" style="display: none; flex-direction: column; gap: 24px; align-items: center; width: 100%;">
+      <h2 style="font-family: var(--font-display); text-align: center;">CONFIGURACIÓN: IA vs IA</h2>
+
+      <div class="setup-container" style="display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 900px; z-index: 10;">
+
+        <div class="player-panel active-turn" style="width: 320px; align-items: stretch; gap: 16px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="player-avatar white-avatar">W</div>
+            <div class="player-name" style="font-size: 1.1rem; margin: 0;">Piezas Blancas</div>
+          </div>
+
+          <div class="form-group">
+            <label class="player-color" style="display:block; margin-bottom: 6px;">MOTOR DE IA</label>
+              <select id="aiWhite" class="btn" style="width: 100%; text-align: left; background: var(--bg);">
+                <option value="gemini">Gemini 2.5 Flash</option>
+                <option value="groq">Groq Llama 3.1</option>
+                <option value="cohere">Cohere Command-R</option>
+                <option value="mistral">Mistral Large</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+            <label class="player-color" id="lblTempWhite" style="display:block; margin-bottom: 6px;">TEMPERATURA: 0.3</label>
+            <input type="range" id="tempWhite" min="0" max="1" step="0.1" value="0.3" style="width: 100%; accent-color: var(--accent-gemini);">
+          </div>
+        </div>
+
+        <div class="player-panel right active-turn" style="width: 320px; align-items: stretch; gap: 16px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="player-avatar black-avatar">B</div>
+            <div class="player-name" style="font-size: 1.1rem; margin: 0;">Piezas Negras</div>
+          </div>
+
+          <div class="form-group">
+            <label class="player-color" style="display:block; margin-bottom: 6px;">MOTOR DE IA</label>
+            <select id="aiBlack" class="btn" style="width: 100%; text-align: left; background: var(--bg);">
+              <option value="groq" selected>Groq Llama 3.1</option>
+              <option value="gemini">Gemini 2.5 Flash</option>
+              <option value="cohere">Cohere Command-R</option>
+              <option value="mistral">Mistral Large</option>
+              <option value="ollama:chess-phi35">Chess Phi3.5 (Local Fine-tuned)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="player-color" id="lblTempBlack" style="display:block; margin-bottom: 6px;">TEMPERATURA: 0.3</label>
+            <input type="range" id="tempBlack" min="0" max="1" step="0.1" value="0.3" style="width: 100%; accent-color: var(--accent-grok);">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-start" id="btnLaunchAI" style="font-size: 1rem; padding: 16px 40px;">⚔ ENTRAR A LA ARENA</button>
+      </div>
+    </div>
+
+    <!-- ─── Configuración Modo 2: Humano vs IA + Experto ─── -->
+    <div id="configHuman" style="display: none; flex-direction: column; gap: 24px; align-items: center; width: 100%;">
+      <h2 style="font-family: var(--font-display); text-align: center;">CONFIGURACIÓN: HUMANO vs IA</h2>
+
+      <div class="setup-container" style="display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 900px; z-index: 10;">
+
+        <div class="player-panel active-turn" style="width: 320px; align-items: stretch; gap: 16px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="player-avatar black-avatar">🤖</div>
+            <div class="player-name" style="font-size: 1.1rem; margin: 0;">IA Oponente</div>
+          </div>
+
+          <div class="form-group">
+            <label class="player-color" style="display:block; margin-bottom: 6px;">MOTOR DE IA</label>
+             <select id="aiOpponent" class="btn" style="width: 100%; text-align: left; background: var(--bg);">
+                <option value="gemini">Gemini 2.5 Flash</option>
+                <option value="groq">Groq Llama 3.1</option>
+                <option value="cohere">Cohere Command-R</option>
+                <option value="mistral">Mistral Large</option>
+                
+              </select>
+          </div>
+
+          <div class="form-group">
+            <label class="player-color" id="lblTempOpponent" style="display:block; margin-bottom: 6px;">TEMPERATURA: 0.3</label>
+            <input type="range" id="tempOpponent" min="0" max="1" step="0.1" value="0.3" style="width: 100%; accent-color: var(--accent-grok);">
+          </div>
+        </div>
+
+        <div class="player-panel right active-turn" style="width: 320px; align-items: stretch; gap: 16px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="player-avatar white-avatar">🧠</div>
+            <div class="player-name" style="font-size: 1.1rem; margin: 0;">Chatbot Experto</div>
+          </div>
+
+          <div class="form-group">
+            <label class="player-color" style="display:block; margin-bottom: 6px;">MOTOR DE IA EXPERTO</label>
+            <select id="aiExpert" class="btn" style="width: 100%; text-align: left; background: var(--bg);">
+                <option value="gemini">Gemini 2.5 Flash</option>
+                <option value="groq">Groq Llama 3.1</option>
+                <option value="cohere">Cohere Command-R</option>
+                <option value="mistral">Mistral Large</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+            <label class="player-color" style="display:block; margin-bottom: 6px;">COLOR DEL JUGADOR</label>
+            <select id="humanColor" class="btn" style="width: 100%; text-align: left; background: var(--bg);">
+              <option value="white">Blancas</option>
+              <option value="black">Negras</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-start" id="btnLaunchHuman" style="font-size: 1rem; padding: 16px 40px;">🎮 EMPEZAR PARTIDA</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // ─── Sliders dinámicos ───
+    const tw = document.getElementById('tempWhite');
+    const tb = document.getElementById('tempBlack');
+    tw.oninput = () => document.getElementById('lblTempWhite').innerText = `TEMPERATURA: ${tw.value}`;
+    tb.oninput = () => document.getElementById('lblTempBlack').innerText = `TEMPERATURA: ${tb.value}`;
+
+    const to = document.getElementById('tempOpponent');
+    to.oninput = () => document.getElementById('lblTempOpponent').innerText = `TEMPERATURA: ${to.value}`;
+
+    // ─── Selección de modo: mostrar/ocultar configuración ───
+    const configAIvsAI = document.getElementById('configAIvsAI');
+    const configHuman = document.getElementById('configHuman');
+    const cardAI = document.getElementById('modeCardAI');
+    const cardHuman = document.getElementById('modeCardHuman');
+
+    // ─── Cargar Modelos Locales de Ollama en los Selects ───
+    async function cargarModelosOllama() {
+      try {
+        // Apuntamos a la API de tu backend express
+        const res = await fetch('http://localhost:3000/api/ollama-models');
+        const data = await res.json();
+        
+        if (data.success && data.models && data.models.length > 0) {
+          
+          const selects = [
+            document.getElementById('aiWhite'),
+            document.getElementById('aiBlack'),
+            document.getElementById('aiOpponent'),
+            document.getElementById('aiExpert')
+          ];
+          
+          selects.forEach(select => {
+            if (!select) return; // Por si acaso alguno no se encuentra
+            
+            data.models.forEach(model => {
+              const opt = document.createElement('option');
+              // Guardamos el formato compuesto 'ollama:nombre' para que lo entienda el backend
+              opt.value = `ollama:${model}`; 
+              opt.textContent = `Ollama: ${model}`;
+              select.appendChild(opt);
+            });
+          });
+          console.log(`[Ollama UI] Se cargaron ${data.models.length} modelos locales.`);
+        }
+      } catch (err) {
+        console.warn("[Ollama UI] No se pudieron precargar modelos desde el backend:", err);
+      }
+    }
+
+    // Ejecutar la carga inmediatamente al abrir la pantalla de configuración
+    cargarModelosOllama();
+
+    cardAI.onclick = () => {
+      configAIvsAI.style.display = 'flex';
+      configHuman.style.display = 'none';
+      cardAI.classList.add('active-turn');
+      cardHuman.classList.remove('active-turn');
+      configAIvsAI.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    cardHuman.onclick = () => {
+      configHuman.style.display = 'flex';
+      configAIvsAI.style.display = 'none';
+      cardHuman.classList.add('active-turn');
+      cardAI.classList.remove('active-turn');
+      configHuman.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // ─── Lanzar Modo 1: IA vs IA ───
+    document.getElementById('btnLaunchAI').onclick = () => {
+      const config = {
+        white: { ai: document.getElementById('aiWhite').value, temp: parseFloat(tw.value) },
+        black: { ai: document.getElementById('aiBlack').value, temp: parseFloat(tb.value) }
+      };
+      sessionStorage.setItem('chess_arena_config', JSON.stringify(config));
+      window.location.href = 'index.html';
+    };
+
+    // ─── Lanzar Modo 2: Humano vs IA + Experto ───
+    document.getElementById('btnLaunchHuman').onclick = () => {
+      const config = {
+        opponent: { ai: document.getElementById('aiOpponent').value, temp: parseFloat(to.value) },
+        expert: { ai: document.getElementById('aiExpert').value },
+        humanColor: document.getElementById('humanColor').value
+      };
+      sessionStorage.setItem('chess_human_config', JSON.stringify(config));
+      window.location.href = 'play.html';
+    };
+
+  </script>
+</body>
+</html>

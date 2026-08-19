@@ -1,0 +1,413 @@
+/* ─── Variables ─── */
+:root {
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --border: #2a2a3a;
+  --accent-white: #e8f4f8;
+  --accent-gemini: #4285f4;
+  --accent-grok: #ff4500;
+  --text: #e0e0f0;
+  --text-muted: #6b6b8a;
+  --green: #00e676;
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --board-size: min(460px, 90vw);
+}
+
+/* ─── Reset ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── Fondo con grid ─── */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(66, 133, 244, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(66, 133, 244, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Header ─── */
+header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 40px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--text);
+}
+
+.logo span {
+  color: var(--accent-gemini);
+}
+
+.badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  transition: all 0.3s;
+}
+
+.badge.running {
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 0 12px rgba(0, 230, 118, 0.2);
+  animation: pulse 2s infinite;
+}
+
+.badge.finished {
+  border-color: var(--accent-grok);
+  color: var(--accent-grok);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ─── Main layout ─── */
+main {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 40px 20px 20px;
+  flex-wrap: wrap;
+}
+
+/* ─── Paneles de jugador ─── */
+.player-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 150px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.player-panel.active-turn {
+  border-color: var(--accent-gemini);
+  box-shadow: 0 0 24px rgba(66, 133, 244, 0.15);
+}
+
+.player-panel.right.active-turn {
+  border-color: var(--accent-grok);
+  box-shadow: 0 0 24px rgba(255, 69, 0, 0.15);
+}
+
+.player-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.white-avatar {
+  background: linear-gradient(135deg, #4285f4, #0d47a1);
+  color: white;
+}
+
+.black-avatar {
+  background: linear-gradient(135deg, #ff4500, #b71c1c);
+  color: white;
+}
+
+.player-info { text-align: center; }
+
+.player-name {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.player-color {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* ─── Indicador de "pensando" ─── */
+.thinking-indicator {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.thinking-indicator.active { opacity: 1; }
+
+.thinking-indicator span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-gemini);
+  animation: bounce 1s infinite;
+}
+
+.player-panel.right .thinking-indicator span {
+  background: var(--accent-grok);
+}
+
+.thinking-indicator span:nth-child(2) { animation-delay: 0.15s; }
+.thinking-indicator span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ─── Tablero ─── */
+.board-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+#board {
+  width: var(--board-size) !important;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 2px var(--border),
+    0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+.move-count {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+/* ─── Controles ─── */
+.controls {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px 20px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-start {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.btn-start:hover:not(:disabled) {
+  background: rgba(0, 230, 118, 0.08);
+  box-shadow: 0 8px 20px rgba(0, 230, 118, 0.15);
+}
+
+.btn-stop {
+  border-color: var(--accent-grok);
+  color: var(--accent-grok);
+}
+
+.btn-stop:hover:not(:disabled) {
+  background: rgba(255, 69, 0, 0.08);
+}
+
+.btn-reset {
+  border-color: var(--text-muted);
+  color: var(--text-muted);
+}
+
+.btn-reset:hover:not(:disabled) {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+/* ─── Log de movimientos ─── */
+.log-section {
+  position: relative;
+  z-index: 10;
+  max-width: 700px;
+  margin: 0 auto 40px;
+  padding: 0 20px;
+}
+
+.log-header {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.log-body {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  min-height: 80px;
+  max-height: 160px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-content: flex-start;
+}
+
+.log-empty {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  align-self: center;
+  width: 100%;
+  text-align: center;
+}
+
+.log-move {
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  animation: fadeIn 0.3s ease;
+}
+
+.log-move.white {
+  color: var(--accent-gemini);
+  border-color: rgba(66, 133, 244, 0.3);
+  background: rgba(66, 133, 244, 0.06);
+}
+
+.log-move.black {
+  color: var(--accent-grok);
+  border-color: rgba(255, 69, 0, 0.3);
+  background: rgba(255, 69, 0, 0.06);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ─── Overlay fin de partida ─── */
+.result-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.result-overlay.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.result-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 48px 56px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.result-icon { font-size: 3rem; }
+
+.result-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.result-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* ─── Scrollbar personalizado ─── */
+.log-body::-webkit-scrollbar { width: 4px; }
+.log-body::-webkit-scrollbar-track { background: transparent; }
+.log-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+  header { padding: 16px 20px; }
+  main { gap: 16px; }
+  .player-panel { width: 110px; padding: 16px 12px; }
+  .player-name { font-size: 0.7rem; }
+}

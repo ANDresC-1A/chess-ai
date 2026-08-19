@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chess AI</title>
+
+  <!-- chessboard.js -->
+  <link rel="stylesheet"
+    href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+
+  <header>
+    <div class="logo">♟ CHESS <span>AI</span></div>
+    <div class="badge" id="statusBadge">EN ESPERA</div>
+  </header>
+
+  <main>
+
+    <!-- Panel izquierdo: Blancas -->
+    <div class="player-panel left" id="panelWhite">
+      <div class="player-avatar white-avatar" id="avatarWhite">W</div>
+      <div class="player-info">
+        <div class="player-name" id="nameWhite">Cargando...</div>
+        <div class="player-color" id="detailsWhite">⬜ Blancas (Temp: 0.0)</div>
+        <div class="captured-pieces" id="capturedByWhite"></div>
+      </div>
+      <div class="thinking-indicator" id="thinkingWhite">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- Tablero -->
+    <div class="board-wrapper">
+      <div id="board"></div>
+      <div class="move-count" id="moveCount">Movimiento #0</div>
+    </div>
+
+    <!-- Panel derecho: Negras -->
+    <div class="player-panel right" id="panelBlack">
+      <div class="player-avatar black-avatar" id="avatarBlack">B</div>
+      <div class="player-info">
+        <div class="player-name" id="nameBlack">Cargando...</div>
+        <div class="player-color" id="detailsBlack">⬛ Negras (Temp: 0.0)</div>
+        <div class="captured-pieces" id="capturedByBlack"></div>
+      </div>
+      <div class="thinking-indicator" id="thinkingBlack">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Controles -->
+  <div class="controls">
+    <button class="btn btn-start" id="btnStart">▶ Iniciar Partida</button>
+    <button class="btn btn-stop" id="btnStop" disabled>⏹ Detener</button>
+    <button class="btn btn-reset" id="btnReset">↺ Reiniciar</button>
+  </div>
+
+  <!-- Log de movimientos -->
+  <section class="log-section">
+    <div class="log-header">Historial de movimientos</div>
+    <div class="log-body" id="moveLog">
+      <span class="log-empty">La partida aún no ha comenzado...</span>
+    </div>
+  </section>
+
+  <!-- Overlay fin de partida -->
+  <div class="result-overlay" id="resultOverlay">
+    <div class="result-card">
+      <div class="result-icon" id="resultIcon">🏆</div>
+      <div class="result-title" id="resultTitle">Fin de partida</div>
+      <div class="result-sub" id="resultSub"></div>
+      <button class="btn btn-reset" onclick="resetGame()">↺ Nueva Partida</button>
+    </div>
+  </div>
+
+  <!-- jQuery + chessboard.js (deben cargar ANTES de main.js) -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
+  <script src="main.js"></script>
+</body>
+</html>

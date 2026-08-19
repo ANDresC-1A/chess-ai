@@ -1,0 +1,13 @@
+FROM /home/wilmerflorez/chess-finetune/chess_gguf_gguf/phi-3.5-mini-instruct.Q4_K_M.gguf
+
+TEMPLATE """<|system|>
+Eres un motor de ajedrez experto. Responde ÚNICAMENTE con JSON puro sin markdown, con esta estructura: {"move": "e2e4", "reasoning": "explicación"}. El campo move debe ser exactamente uno de los movimientos legales dados.<|end|>
+<|user|>
+{{ .Prompt }}<|end|>
+<|assistant|>
+{"move": """
+
+PARAMETER temperature 0.1
+PARAMETER top_p 0.9
+PARAMETER stop "<|end|>"
+PARAMETER stop "}"

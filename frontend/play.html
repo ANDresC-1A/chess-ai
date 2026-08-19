@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jugar - Chess AI</title>
+
+  <link rel="stylesheet"
+    href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    #board {
+    width: 480px;
+    max-width: 90vw;
+    }
+    .chat-panel {
+      display: flex;
+      flex-direction: column;
+      width: 320px;
+      max-height: 520px;
+      background: var(--panel-bg, rgba(255,255,255,0.04));
+      border-radius: 12px;
+      padding: 16px;
+      gap: 12px;
+    }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 200px;
+      max-height: 360px;
+    }
+    .chat-message {
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+    .chat-message.expert {
+      background: rgba(99, 179, 237, 0.12);
+      border-left: 3px solid var(--accent-gemini, #63b3ed);
+    }
+    .chat-message.system {
+      background: rgba(255,255,255,0.05);
+      font-style: italic;
+      opacity: 0.8;
+    }
+    .chat-move-highlight {
+      font-family: var(--font-mono, monospace);
+      font-weight: bold;
+      color: var(--accent-grok, #f6ad55);
+    }
+    .suggest-btn {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+
+  <header>
+    <div class="logo">♟ CHESS <span>AI</span></div>
+    <div class="badge" id="statusBadge">TU TURNO</div>
+  </header>
+  
+  <main>
+
+    <!-- Panel izquierdo: Jugador -->
+    <div class="player-panel left" id="panelPlayer">
+      <div class="player-avatar white-avatar" id="avatarPlayer">🧑</div>
+      <div class="player-info">
+        <div class="player-name">Tú</div>
+        <div class="player-color" id="detailsPlayer">⬜ Blancas</div>
+        <div class="captured-pieces" id="capturedByPlayer"></div>
+      </div>
+    </div>
+
+    <!-- Tablero -->
+    <div class="board-wrapper">
+      <div id="board"></div>
+      <div class="move-count" id="moveCount">Movimiento #0</div>
+    </div>
+
+    <!-- Panel derecho: IA Oponente -->
+    <div class="player-panel right" id="panelOpponent">
+      <div class="player-avatar black-avatar" id="avatarOpponent">🤖</div>
+      <div class="player-info">
+        <div class="player-name" id="nameOpponent">IA</div>
+        <div class="player-color" id="detailsOpponent">⬛ Negras</div>
+        <div class="captured-pieces" id="capturedByOpponent"></div>
+      </div>
+      <div class="thinking-indicator" id="thinkingOpponent">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Chat del experto -->
+  <section class="log-section" style="display: flex; justify-content: center;">
+    <div class="chat-panel">
+      <div class="log-header">🧠 Chatbot Experto (<span id="expertName">--</span>)</div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-message system">Pide una sugerencia cuando quieras ayuda con tu jugada.</div>
+      </div>
+      <button class="btn btn-start suggest-btn" id="btnSuggest">💡 Sugerir jugada</button>
+    </div>
+  </section>
+
+  <!-- Controles -->
+  <div class="controls">
+    <button class="btn btn-reset" id="btnReset">↺ Nueva Partida</button>
+    <button class="btn" id="btnBack">← Volver al menú</button>
+  </div>
+
+  <!-- Overlay fin de partida -->
+  <div class="result-overlay" id="resultOverlay">
+    <div class="result-card">
+      <div class="result-icon" id="resultIcon">🏆</div>
+      <div class="result-title" id="resultTitle">Fin de partida</div>
+      <div class="result-sub" id="resultSub"></div>
+      <button class="btn btn-reset" onclick="location.reload()">↺ Nueva Partida</button>
+    </div>
+  </div>
+
+  <!-- jQuery + chessboard.js + chess.js -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+  <script src="play.js"></script>
+</body>
+</html>
