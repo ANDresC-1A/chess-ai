@@ -95,5 +95,5 @@ Este proyecto fue desarrollado con apoyo de herramientas de inteligencia artific
 
 ## 👤 Autor
 Desarrollado por Adrian Ariza Tapia como parte de mi formación en Ingeniería de Sistemas.
-- LinkedIn: https://www.linkedin.com/in/adrian-ariza-tapia-41a4603b7/
+- LinkedIn: https://www.linkedin.com/in/adrian-ariza-tapia/
 - GitHub: [@Adrian-Ariza](https://github.com/Adrian-Ariza)
