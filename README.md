@@ -94,6 +94,6 @@ ollama pull nombre-del-modelo
 Este proyecto fue desarrollado con apoyo de herramientas de inteligencia artificial como asistencia durante el desarrollo.
 
 ## 👤 Autor
-Desarrollado por Adrian Ariza Tapia como parte de mi formación en Ingeniería de Sistemas.
+Desarrollado por Adrian Ariza Tapia, Andres Contreras, Wilmer Flores como parte de nuestra formación en Ingeniería de Sistemas.
 - LinkedIn: https://www.linkedin.com/in/adrian-ariza-tapia/
 - GitHub: [@Adrian-Ariza](https://github.com/Adrian-Ariza)
