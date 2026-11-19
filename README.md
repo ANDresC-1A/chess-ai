@@ -85,6 +85,20 @@ ollama pull nombre-del-modelo
 3. Realiza tus movimientos en el tablero
 4. La IA responde con su movimiento
 
+
+<h3>🤖 IA vs IA</h3>
+
+<p align="center">
+  <img src="docs/images/ia-vs-ia.png" width="90%" alt="Chess AI - IA vs IA">
+</p>
+
+<h3>♟️ Persona vs IA</h3>
+
+<p align="center">
+  <img src="docs/images/persona-vs-ia.png" width="90%" alt="Chess AI - Persona vs IA">
+</p>
+
+
 ## 📌 Estado del proyecto
 
 ✅ Completo y funcional.
