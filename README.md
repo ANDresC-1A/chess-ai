@@ -86,17 +86,23 @@ ollama pull nombre-del-modelo
 4. La IA responde con su movimiento
 
 
+
 <h3>🤖 IA vs IA</h3>
 
 <p align="center">
-  <img src="docs/images/ia-vs-ia.png" width="90%" alt="Chess AI - IA vs IA">
+  <img src="docs/images/imagen%20IA%20vs%20IA.jpeg"
+       width="90%"
+       alt="Partida de inteligencia artificial contra inteligencia artificial">
 </p>
 
 <h3>♟️ Persona vs IA</h3>
 
 <p align="center">
-  <img src="docs/images/persona-vs-ia.png" width="90%" alt="Chess AI - Persona vs IA">
+  <img src="docs/images/imagen%20Jugador%20vs%20IA.jpeg"
+       width="90%"
+       alt="Jugador contra inteligencia artificial con asistente de ajedrez">
 </p>
+
 
 
 ## 📌 Estado del proyecto
